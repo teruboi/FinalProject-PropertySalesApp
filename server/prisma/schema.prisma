@@ -1,0 +1,104 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model agency {
+  agency_id String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name      String  @db.VarChar
+  phone     String  @db.VarChar
+  addr      String  @db.VarChar
+  logo      String? @db.VarChar
+  agent     agent[]
+}
+
+model agent {
+  agent_id      String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email         String          @db.VarChar
+  password      String          @db.VarChar
+  full_name     String          @db.VarChar
+  avatar        String?         @db.VarChar
+  agency_id     String?         @db.Uuid
+  agency        agency?         @relation(fields: [agency_id], references: [agency_id], onUpdate: NoAction, map: "agency")
+  agentBio      agentBio?
+  property_list property_list[]
+}
+
+model agentBio {
+  agent_id String @id @db.Uuid
+  addr     String @db.VarChar
+  city     String @db.VarChar
+  prov     String @db.VarChar
+  phone    String @db.VarChar
+  agent    agent  @relation(fields: [agent_id], references: [agent_id], onDelete: Cascade, map: "agent_id")
+}
+
+model owner {
+  id          String        @id(map: "owner_id") @db.Uuid
+  nik         String        @db.VarChar
+  name        String        @db.VarChar
+  phone       String        @db.VarChar
+  addr        String        @db.VarChar
+  prop_detail prop_detail[]
+}
+
+model photos {
+  image_id      String        @id(map: "id") @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  prop_id       String        @db.VarChar
+  image         String        @db.VarChar
+  property_list property_list @relation(fields: [prop_id], references: [id], onDelete: Cascade, map: "prop_id")
+}
+
+model prop_detail {
+  prop_type     String        @db.VarChar
+  lt            Int
+  lb            Int?
+  km            Int?          @db.SmallInt
+  kt            Int?          @db.SmallInt
+  floor         Int?          @db.SmallInt
+  cert          String        @db.VarChar
+  power         Int?
+  carport       Int?          @db.SmallInt
+  garage        Int?          @db.SmallInt
+  condition     String?       @db.VarChar
+  facing        String?       @db.VarChar
+  year          Int?
+  furniture     String?       @db.VarChar
+  prop_id       String        @id @db.VarChar
+  owner_id      String        @db.Uuid
+  prop_sale     String        @db.VarChar
+  description   String        @db.VarChar
+  owner         owner         @relation(fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "owner_id")
+  property_list property_list @relation(fields: [prop_id], references: [id], onDelete: Cascade, map: "prop_id")
+}
+
+model property_list {
+  prop_name   String       @db.VarChar
+  price       Int
+  prop_prov   String       @db.VarChar
+  prop_city   String       @db.VarChar
+  agent_id    String       @db.Uuid
+  available   Boolean      @default(true)
+  id          String       @id(map: "prop_id") @db.VarChar
+  dateAdded   DateTime     @default(now()) @db.Date
+  photos      photos[]
+  prop_detail prop_detail?
+  agent       agent        @relation(fields: [agent_id], references: [agent_id], onDelete: NoAction, onUpdate: NoAction, map: "agent_id")
+  trans_data  trans_data[]
+}
+
+model trans_data {
+  id            String        @id(map: "transaction") @db.Uuid
+  prop_id       String        @db.VarChar
+  buyer_name    String        @db.VarChar
+  buyer_phone   String        @db.VarChar
+  buyer_addr    String        @db.VarChar
+  total_price   Int
+  date          DateTime      @default(now()) @db.Date
+  property_list property_list @relation(fields: [prop_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "prop_id")
+}

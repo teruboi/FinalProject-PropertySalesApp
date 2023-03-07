@@ -1,0 +1,44 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server-side for Listingan.com",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teruboi/FinalProject-PropertySalesApp.git"
+  },
+  "author": "Reynaldi Nickolas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teruboi/FinalProject-PropertySalesApp/issues"
+  },
+  "homepage": "https://github.com/teruboi/FinalProject-PropertySalesApp#readme",
+  "dependencies": {
+    "@prisma/client": "^4.10.1",
+    "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "express-validator": "^6.15.0",
+    "helmet": "^6.0.1",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "passport": "^0.6.0",
+    "passport-google-oauth2": "^0.2.0",
+    "pg": "^8.9.0",
+    "pg-hstore": "^2.3.4",
+    "query-string": "^8.1.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "prisma": "^4.10.1"
+  }
+}
