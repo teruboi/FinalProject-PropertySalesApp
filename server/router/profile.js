@@ -9,15 +9,15 @@ const upload = multer({
     dest: '../server/public/pp'
 })
 
-async function getAgent(userId){
+async function getAgent(userId) {
     const agent = await prisma.agent.findUnique({
-            where: {
-                agent_id: userId
-            },
-            include: {
-                agentBio: true
-            }
-        })
+        where: {
+            agent_id: userId
+        },
+        include: {
+            agentBio: true
+        }
+    })
 
     return agent
 }
@@ -35,9 +35,9 @@ async function getTransaction(userId) {
     return data
 }
 
-router.get('/:id', async (req, res) => {
+router.get('/profile', async(req, res) => {
     try {
-        const agent = await getAgent(req.params.id)
+        const agent = await getAgent(req.query.id)
         res.json(agent)
     } catch (err) {
         console.error(err)
@@ -47,12 +47,12 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.put('/:id', upload.single(), async (req, res) => {
+router.put('/profile', upload.single(), async(req, res) => {
     try {
         const body = req.body
         const agent = await prisma.agent.update({
             where: {
-                agent_id: req.params.id
+                agent_id: req.query.id
             },
             data: {
                 full_name: body.lName ? body.fName + ' ' + body.lName : body.fName,
@@ -68,13 +68,13 @@ router.put('/:id', upload.single(), async (req, res) => {
             }
         })
     } catch (err) {
-        
+
     }
 })
 
-router.get('/:id/transactions', async (req, res) => {
+router.get('/profile/transactions', async(req, res) => {
     try {
-        const transaction = await getTransaction(req.params.id)
+        const transaction = await getTransaction(req.query.id)
         if (transaction === null) {
             res.status(404).json({
                 message: 'No transactions found'

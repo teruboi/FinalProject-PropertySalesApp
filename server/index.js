@@ -28,11 +28,11 @@ app.use(cors())
 app.use(helmet())
 app.use(morgan('tiny'))
 
-app.listen(port, function (req, res) {
+app.listen(port, function(req, res) {
     console.log(`Server listening on port ${port}`);
 })
 
 app.use('/', catalog)
 app.use('/', product)
-app.use('/profile', profile)
+app.use('/', profile)
 app.use('/', main)

@@ -11,23 +11,23 @@ const prisma = new PrismaClient()
 const router = express.Router()
 
 const hashingPw = async(password) => {
-    const hashedPassword = bcrypt.genSalt(10, function (err, Salt) {
-  
+    const hashedPassword = bcrypt.genSalt(10, function(err, Salt) {
+
         // The bcrypt is used for encrypting password.
-        bcrypt.hash(password, Salt, function (err, hash) {
-      
+        bcrypt.hash(password, Salt, function(err, hash) {
+
             if (err) {
                 return console.log('Cannot encrypt');
             }
-      
+
             hashedPassword = hash;
         })
     })
-  
+
     return hashedPassword
 }
 
-router.post('/login/newuser', [checkUser, passport.authenticate()], async (req, res) => {
+router.post('/login/newuser', checkUser, async(req, res) => {
     // console.log(req.body);
     try {
         const newUser = await prisma.agent.create({
@@ -45,7 +45,7 @@ router.post('/login/newuser', [checkUser, passport.authenticate()], async (req, 
                 }
             }
         })
-    
+
         res.json(newUser)
     } catch (error) {
         console.log(error);

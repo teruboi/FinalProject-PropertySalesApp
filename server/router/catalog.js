@@ -24,7 +24,7 @@ async function getCatalog(sort, filter, pageNumber) {
             photos: true
         },
         orderBy: sort,
-        skip: (pageNumber*20),
+        skip: (pageNumber * 20),
         take: 20
     })
     return catalog
@@ -33,10 +33,10 @@ async function getCatalog(sort, filter, pageNumber) {
 router.get('/catalog', async(req, res) => {
     try {
         const agent = await prisma.agent.findFirst({
-            where: { 
+            where: {
                 email: {
                     contains: req.query.username
-                } 
+                }
             },
         })
 
@@ -68,23 +68,23 @@ router.get('/catalog', async(req, res) => {
             }
         }
 
-        if(!req.query.orderBy){
+        if (!req.query.orderBy) {
             orderBy = 'desc'
         } else orderBy = req.query.orderBy
 
-        if(!req.query.sortBy){
+        if (!req.query.sortBy) {
             sortBy = 'dateAdded'
         } else sortBy = req.query.sortBy
 
-        if(!req.query.p){
+        if (!req.query.p) {
             pageNumber = 0
         } else pageNumber = req.query.p
 
-        sort = {[sortBy]: orderBy}
+        sort = {
+            [sortBy]: orderBy }
 
         const data = await getCatalog(sort, filter, pageNumber)
 
-        console.log(data);
         res.json(data);
     } catch (err) {
         console.error(err)

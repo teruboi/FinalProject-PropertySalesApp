@@ -3,23 +3,39 @@ import { FiFilter } from "react-icons/fi";
 import { BsSortDown } from "react-icons/bs";
 
 import ProductCard from '../components/productCard'
-import { getAgent, getCatalog } from '../api';
 import { useLocation } from 'react-router-dom';
+import { getCatalog } from '../api';
 
 export default function Catalog() {
   const location = useLocation()
   const [data, setData] = useState([])
 
+  const getData = async () => {
+    try {
+      const jsonData = await(
+        await fetch(
+          `http//localhost:3000/catalog${location.search}`
+        )
+      ).json()
+      
+      console.log(jsonData);
+      setData(jsonData)
+
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
   useEffect(()=> {
-    setData(getCatalog(location.search))
-    console.log(data);
-  },[data]) 
+    getData()
+  },[]);
 
   console.log(data);
 
-  const Product = data.map(e => 
-    <ProductCard data={e} />
-    )
+  // const Product = data.map(e => {
+  //   <ProductCard data={e} />
+  // })
+
   try {
     return (
       <div className="flex-grow">
@@ -40,13 +56,13 @@ export default function Catalog() {
 
             </div>
             <div className="colspan-2 grid grid-cols-2 gap-4">
-              <Product />
+              {/* <Product /> */}
             </div>
           </div>
       </div>
     );
   } catch (err) {
-    console.error(err);
+    console.log(err);
   }
   
 }

@@ -1,22 +1,28 @@
 // Importing npm modules
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 // Importing local components
 import SideBar from './components/sidebar'
 import Router from './router'
 
 export default function App() {
-  let show = false
+  const [show, setShow] = useState(false)
 
-  if (window.location.href.indexOf('landing') > -1) {
-    show = true
-  } else {
-    show = false
-  }
+  useEffect(() => {
+    if (window.location.href === "http://192.168.1.13:5173/" ||
+    window.location.href === "http://192.168.1.13:5173/login" ||
+    window.location.href === "http://192.168.1.13:5173/register") {
+      setShow(false)
+    } else {
+      setShow(true)
+    }
+  }, [])  
+  
+  console.log(show);
 
   return (
     <div className="flex">
-      <SideBar className={`${show ? "hidden" : "visible"}`}/>
+      <SideBar className={`${show ? "visible" : "hidden"}`}/>
       <Router />
     </div>
   )

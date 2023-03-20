@@ -9,7 +9,7 @@ datasource db {
 }
 
 model agency {
-  agency_id String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  agency_id String  @id @db.Uuid
   name      String  @db.VarChar
   phone     String  @db.VarChar
   addr      String  @db.VarChar
@@ -18,7 +18,7 @@ model agency {
 }
 
 model agent {
-  agent_id      String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  agent_id      String          @id @db.Uuid
   email         String          @db.VarChar
   password      String          @db.VarChar
   full_name     String          @db.VarChar
@@ -48,7 +48,7 @@ model owner {
 }
 
 model photos {
-  image_id      String          @id(map: "id") @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  image_id      String          @id(map: "id") @db.Uuid
   image         String[]        @db.VarChar
   property_list property_list[]
 }
@@ -71,7 +71,6 @@ model prop_detail {
   prop_id       String        @id @db.VarChar
   prop_sale     String        @db.VarChar
   description   String
-  area          Int
   property_list property_list @relation(fields: [prop_id], references: [id], onDelete: Cascade, map: "prop_id")
 }
 
