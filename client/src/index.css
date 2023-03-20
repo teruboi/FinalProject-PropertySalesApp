@@ -1,33 +1,47 @@
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-100 dark:bg-gray-900 transition-all
+  }
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+@layer components {
+  .sidebar{
+    @apply bg-lightMain dark:bg-darkMain h-screen w-60 flex-col px-3;
+  }
 
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  position: relative;
-  margin: var(--header-height) 0 0 0;
-  font-family: var(--body-font);
-  font-size: var(--normal-font-size);
-  transition: .5s;
-  background-color: plum;
-}
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+  .sidebar-blocks{
+    @apply border-b px-2 py-4 border-darkMain/75 dark:border-lightMain/75
+  }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Lato', sans-serif;
-}
+  .nav-option {
+     @apply flex justify-between text-white font-semibold py-4 px-2
+  }
 
-.landing {
-  display: flex;
-  height: 90vh;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
+  .open {
+    @apply left-0 transition-all ;
+  }
+
+  .card{
+    @apply w-96 aspect-square justify-center items-center relative
+  }
+
+  .product-photo{
+    @apply flex bg-black/25 w-full h-3/4 z-0 relative rounded-t-xl overflow-hidden justify-center
+  }
+
+  .price{
+    @apply bg-gray-50 h-fit w-1/2 absolute z-20 py-2 px-2 top-2 right-2 rounded-md text-center font-bold text-xl
+  }
+
+  .fade-black{
+    @apply bg-gradient-to-t from-black z-10 w-full h-20 absolute top-52
+  }
+
+  .product-data{
+    @apply w-full h-1/4 bg-black text-white z-0 relative px-3 pb-3 text-base rounded-b-xl
+  }
 }

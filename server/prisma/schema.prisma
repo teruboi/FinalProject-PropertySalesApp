@@ -39,19 +39,18 @@ model agentBio {
 }
 
 model owner {
-  id          String        @id(map: "owner_id") @db.Uuid
-  nik         String        @db.VarChar
-  name        String        @db.VarChar
-  phone       String        @db.VarChar
-  addr        String        @db.VarChar
-  prop_detail prop_detail[]
+  id            String          @id(map: "owner_id") @db.Uuid
+  nik           String          @db.VarChar
+  name          String          @db.VarChar
+  phone         String          @db.VarChar
+  addr          String          @db.VarChar
+  property_list property_list[]
 }
 
 model photos {
-  image_id      String        @id(map: "id") @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
-  prop_id       String        @db.VarChar
-  image         String        @db.VarChar
-  property_list property_list @relation(fields: [prop_id], references: [id], onDelete: Cascade, map: "prop_id")
+  image_id      String          @id(map: "id") @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  image         String[]        @db.VarChar
+  property_list property_list[]
 }
 
 model prop_detail {
@@ -70,10 +69,9 @@ model prop_detail {
   year          Int?
   furniture     String?       @db.VarChar
   prop_id       String        @id @db.VarChar
-  owner_id      String        @db.Uuid
   prop_sale     String        @db.VarChar
-  description   String        @db.VarChar
-  owner         owner         @relation(fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "owner_id")
+  description   String
+  area          Int
   property_list property_list @relation(fields: [prop_id], references: [id], onDelete: Cascade, map: "prop_id")
 }
 
@@ -86,9 +84,12 @@ model property_list {
   available   Boolean      @default(true)
   id          String       @id(map: "prop_id") @db.VarChar
   dateAdded   DateTime     @default(now()) @db.Date
-  photos      photos[]
+  image_id    String       @db.Uuid
+  owner_id    String       @db.Uuid
   prop_detail prop_detail?
   agent       agent        @relation(fields: [agent_id], references: [agent_id], onDelete: NoAction, onUpdate: NoAction, map: "agent_id")
+  photos      photos       @relation(fields: [image_id], references: [image_id], onDelete: Cascade, onUpdate: NoAction, map: "image")
+  owner       owner        @relation(fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "owner")
   trans_data  trans_data[]
 }
 

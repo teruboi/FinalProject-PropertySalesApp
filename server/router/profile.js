@@ -1,11 +1,16 @@
 const { PrismaClient } = require('@prisma/client');
 const express = require('express')
+const multer = require('multer')
+const bcrypt = require('bcrypt')
 
 const prisma = new PrismaClient()
 const router = express.Router()
+const upload = multer({
+    dest: '../server/public/pp'
+})
 
 async function getAgent(userId){
-        const agent = await prisma.agent.findUnique({
+    const agent = await prisma.agent.findUnique({
             where: {
                 agent_id: userId
             },
@@ -13,6 +18,8 @@ async function getAgent(userId){
                 agentBio: true
             }
         })
+
+    return agent
 }
 
 async function getTransaction(userId) {
@@ -37,6 +44,31 @@ router.get('/:id', async (req, res) => {
         res.status(404).json({
             message: err
         })
+    }
+})
+
+router.put('/:id', upload.single(), async (req, res) => {
+    try {
+        const body = req.body
+        const agent = await prisma.agent.update({
+            where: {
+                agent_id: req.params.id
+            },
+            data: {
+                full_name: body.lName ? body.fName + ' ' + body.lName : body.fName,
+                agentBio: {
+                    addr: body.addr,
+                    city: body.city,
+                    prov: body.prov,
+                    phone: body.phone
+                }
+            },
+            include: {
+                agentBio: true
+            }
+        })
+    } catch (err) {
+        
     }
 })
 

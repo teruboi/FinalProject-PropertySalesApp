@@ -1,12 +1,14 @@
 const express = require('express');
-const { PrismaClient } = require('@prisma/client')
+const { PrismaClient, Prisma } = require('@prisma/client')
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
+require('dotenv').config
+
 async function getCatalog(sort, filter, pageNumber) {
 
-    const catalog = await prisma.property_list.aggregate({
+    const catalog = await prisma.property_list.findMany({
         where: filter,
         include: {
             prop_detail: {
@@ -15,65 +17,78 @@ async function getCatalog(sort, filter, pageNumber) {
                     lt: true,
                     km: true,
                     kt: true,
+                    prop_sale: true,
+                    prop_type: true
                 }
-            }
+            },
+            photos: true
         },
         orderBy: sort,
-        skip: (pageNumber*10),
-        take: 10
+        skip: (pageNumber*20),
+        take: 20
     })
     return catalog
 }
 
-const isLoggedIn = require('../middleware/isLoggedIn')
-
-router.get('/:id', isLoggedIn, async (req, res) => {
+router.get('/catalog', async(req, res) => {
     try {
-        let filter = []
-        let pageNumber = 0
-        let sort = {}
+        const agent = await prisma.agent.findFirst({
+            where: { 
+                email: {
+                    contains: req.query.username
+                } 
+            },
+        })
 
-        filter.push({agent_id: req.params.id}, {available: true})
+        let filter = Prisma.UserWhereInput
+        let pageNumber = req.query.p
+        let orderBy = ''
+        let sortBy = ''
+        let sort = Prisma.UserOrderByInput
 
-        if(req.query.sortBy && req.query.orderBy) {
-            sort = {[req.query.sortBy]: req.query.orderBy}
-        }
-        
-        if (req.query.keyword) {
-            filter.push({ prop_name: {
-                search: new RegExp(req.query.keyword, 'i') }
-            })
-        }
-        if (req.query.saleType) {
-            filter.push({ prop_detail: { prop_sale: req.query.saleType } })
-        }
-        if (req.query.p) {
-            pageNumber = parseInt(req.query.p)
-        }
-        if (req.query.minPrice || req.query.maxPrice) {
-            filter.push({ price: {
-                lt: parseInt(req.query.maxPrice), gt: parseInt(req.query.minPrice)
-            }})
-        }
-        if (req.query.propType) {
-            filter.push({ prop_detail: {
-                prop_type: req.query.propType
-            }})
-        }
-        if (req.query.city) {
-            filter.push({ prop_city: req.query.city})
-        }
-        if (req.query.prov) {
-            filter.push({ prop_prov: req.query.prov})
+        filter = {
+            agent_id: agent.agent_id,
+            available: true,
+            prop_name: {
+                search: req.body.keyword ? req.body.keyword : undefined
+            },
+            price: {
+                lte: req.query.maxPrice ? parseInt(req.query.maxPrice) : undefined,
+                gte: req.query.minPrice ? parseInt(req.query.minPrice) : undefined
+            },
+            prop_city: {
+                search: req.query.city ? req.query.city : undefined
+            },
+            prop_prov: {
+                search: req.query.prov ? req.query.prov : undefined
+            },
+            prop_detail: {
+                prop_sale: req.query.saleType ? req.query.saleType : undefined,
+                prop_type: req.query.propType ? req.query.propType : undefined
+            }
         }
 
-        console.log(filter, sort, pageNumber);
+        if(!req.query.orderBy){
+            orderBy = 'desc'
+        } else orderBy = req.query.orderBy
+
+        if(!req.query.sortBy){
+            sortBy = 'dateAdded'
+        } else sortBy = req.query.sortBy
+
+        if(!req.query.p){
+            pageNumber = 0
+        } else pageNumber = req.query.p
+
+        sort = {[sortBy]: orderBy}
 
         const data = await getCatalog(sort, filter, pageNumber)
+
+        console.log(data);
         res.json(data);
     } catch (err) {
         console.error(err)
-        res.sendStatus(404)
+        res.json({ error: err })
     }
 });
 
