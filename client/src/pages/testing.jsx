@@ -1,27 +1,26 @@
 import { FaBed, FaShower } from "react-icons/fa";
-
+import { useSearchParams } from 'react-router-dom'
 
 export default function test() {
+    const [query, setQuery] = useSearchParams()
+    const url = "http://localhost:5173/testing"
+
     return (
-        <div className="ml-6 h-screen w-screen">
-            <div className="card">
-                <div className="product-photo">
-                    <img src="/img_placeholder.png" className="max-w-full max-h-full"/>
-                </div>
-                <div className="price">
-                    Rp xx.xxx.xxx,-
-                </div>
-                <div className="fade-black" />
-                <div className="product-data">
-                    <span className="text-2xl font-semibold">Property Name</span>
-                    <br></br>
-                    <span className="inline-flex items-center">
-                        <FaBed className="mr-2"/>2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FaShower className="mx-2"/>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 60m<sup>2</sup>
-                    </span>
-                    <br></br>
-                    <p className="font-extralight text-sm">BANDUNG, JAWA BARAT</p>
-                </div>
-            </div>
+        <div className="content">
+            <form action={url} method="get" className="w-1/3 grid grid-cols-2 gap-y-4">
+                <label htmlFor="propType">Tipe properti</label>
+                <select name="propType" id="propType">
+                    <option className="text-gray-700/50">Pilih tipe properti</option>
+                    <option value="rumah">Rumah</option>
+                    <option value="apartemen">Apartemen</option>
+                    <option value="ruko">Ruko</option>
+                    <option value="tanah">Tanah</option>
+                </select>
+                <input type="range" class="range-slider-input-left" tabindex="0" max="100" min="0" step="1" />
+	            <input type="range" class="range-slider-input-right" tabindex="0" max="100" min="0" step="1" />
+            </form>
+
+            <div className="h-fit w-fit font-bold rounded-xl px-1 bg-amber-300 border-4 border-amber-700 text-amber-700">TNH</div>
         </div>
     )
 }

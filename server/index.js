@@ -23,7 +23,7 @@ const prisma = new PrismaClient()
 app.use(express.static(__dirname + '/public'));
 app.use(cookieParser())
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 app.use(helmet())
 app.use(morgan('tiny'))

@@ -12,6 +12,9 @@ module.exports = {
       colors: {
         lightMain: "#7456DB",
         darkMain: "#1E003D",
+      },
+      fontSize: {
+        fitbase: "1.5vw"
       }
     },
   },

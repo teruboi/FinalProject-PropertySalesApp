@@ -19,7 +19,7 @@ function App() {
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/profile" element={<Profile />} />
         <Route exact path="/catalog" element={<Catalog />} />
-        <Route exact path="/products" element={<Product />} />
+        <Route path="/products/:id" element={<Product />} />
         <Route exact path="/checkout" element={<Checkout />} />
         <Route exact path="/notifications" element={<Notification />} />
         <Route exact path="/testing" element={<Testing />} />

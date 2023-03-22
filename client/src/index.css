@@ -9,12 +9,36 @@
 }
 
 @layer components {
+  label{
+    @apply text-base text-black dark:text-white
+  }
+
+  input[type='checkbox']{
+    @apply enabled:bg-white enabled:dark:bg-black caret-lightMain hover:bg-current
+  }
+
+  .content {
+    @apply flex-grow h-screen overflow-scroll px-5 py-5
+  }
+
   .sidebar{
-    @apply bg-lightMain dark:bg-darkMain h-screen w-60 flex-col px-3;
+    @apply bg-lightMain dark:bg-darkMain h-screen w-60 flex-col px-3
+  }
+
+  .search-bar{
+    @apply flex static w-auto mx-5 my-5 bg-slate-300 dark:bg-[#525252] h-10 items-center justify-center px-5 py-6 rounded-lg
+  }
+
+  .search-input{
+    @apply w-full bg-transparent dark:border-b-white border-b-gray-800 border-b focus:outline-0 caret-white text-white placeholder:text-gray-700 dark:placeholder:text-white/75
+  }
+
+  .filter-box{
+    @apply col-span-1 rounded-md px-4 py-4 h-fit w-full bg-lightMain/80 dark:bg-darkMain/80
   }
 
   .sidebar-blocks{
-    @apply border-b px-2 py-4 border-darkMain/75 dark:border-lightMain/75
+    @apply border-b px-2 py-4 w-full border-darkMain/75 dark:border-lightMain/75
   }
 
   .nav-option {
@@ -26,7 +50,7 @@
   }
 
   .card{
-    @apply w-96 aspect-square justify-center items-center relative
+    @apply block w-full flex-col aspect-square justify-center items-center relative 
   }
 
   .product-photo{
@@ -34,14 +58,30 @@
   }
 
   .price{
-    @apply bg-gray-50 h-fit w-1/2 absolute z-20 py-2 px-2 top-2 right-2 rounded-md text-center font-bold text-xl
+    @apply bg-gray-50 w-fit absolute z-20 py-2 px-2 top-2 right-2 rounded-md drop-shadow-lg shadow-black text-center font-bold text-fitbase
+  }
+
+  .propType{
+    @apply h-fit w-fit font-bold rounded-xl px-1 border-4 absolute z-30 text-[1vw] text-center left-2 top-2
   }
 
   .fade-black{
-    @apply bg-gradient-to-t from-black z-10 w-full h-20 absolute top-52
+    @apply bg-gradient-to-t from-white dark:from-black z-10 w-full h-20 absolute top-[53.2%]
   }
 
   .product-data{
-    @apply w-full h-1/4 bg-black text-white z-0 relative px-3 pb-3 text-base rounded-b-xl
+    @apply w-full h-1/4 bg-white dark:bg-black text-black dark:text-white z-0 relative px-3 pb-3 text-base rounded-b-xl overflow-hidden
+  }
+
+  .form{
+    @apply grid
+  }
+
+  .overflows {
+    @apply transition-all duration-1000 ml-0 hover:-ml-56
+  }
+
+  .propName {
+    @apply text-lg w-full font-semibold inline-block text-ellipsis whitespace-nowrap overflow-hidden
   }
 }
