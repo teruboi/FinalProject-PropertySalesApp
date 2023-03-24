@@ -9,7 +9,7 @@ export default function Sidebar(avatar, name) {
     const iconStyle = { width: '24px', height: '24px', color: '#f0f0f0', borderColor: "#f0f0f0" }
 
     useEffect(() => {
-        if(window.location.href.includes('landing') ||
+        if(window.location.href.includes('?landing') ||
         window.location.href.includes('login') ||
         window.location.href.includes('register')) {
             setHide(true)
@@ -25,7 +25,7 @@ export default function Sidebar(avatar, name) {
             <div className="sidebar">
                 <div className="sidebar-blocks">
                     <div className='bg-white px-1 py-1 rounded-xl'>
-                        <img src='listingan-com-logo.png' />
+                        <img src='/listingan-com-logo.png' />
                     </div>
                 </div>
                 <div className='sidebar-blocks'>

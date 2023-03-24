@@ -1,9 +1,12 @@
 import { FaBed, FaShower } from "react-icons/fa";
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useLocation, useParams } from 'react-router-dom'
 
 export default function test() {
     const [query, setQuery] = useSearchParams()
-    const url = "http://localhost:5173/testing"
+    const url = useLocation()
+    const { id } = useParams()
+
+    console.log(id);
 
     return (
         <div className="content">

@@ -14,7 +14,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Landing />}/>
+        <Route exact path="/?landing" element={<Landing />}/>
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/profile" element={<Profile />} />
@@ -22,7 +22,7 @@ function App() {
         <Route path="/products/:id" element={<Product />} />
         <Route exact path="/checkout" element={<Checkout />} />
         <Route exact path="/notifications" element={<Notification />} />
-        <Route exact path="/testing" element={<Testing />} />
+        <Route exact path="/testing/:id" element={<Testing />} />
       </Routes>
     </Router>
   );

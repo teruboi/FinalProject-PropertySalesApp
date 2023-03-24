@@ -1,87 +1,100 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer base {
-  body {
-    @apply bg-slate-100 dark:bg-gray-900 transition-all
-  }
+    body {
+        @apply bg-slate-100 dark:bg-gray-900 transition-all
+    }
 }
 
 @layer components {
-  label{
-    @apply text-base text-black dark:text-white
-  }
+    label {
+        @apply text-base text-black dark:text-white
+    }
+    input[type='checkbox'] {
+        @apply enabled:bg-white enabled:dark:bg-black caret-lightMain hover:bg-current
+    }
+    .content {
+        @apply flex-grow h-screen overflow-scroll px-5 py-5
+    }
+    .sidebar {
+        @apply bg-lightMain dark:bg-darkMain h-screen w-60 flex-col px-3
+    }
+    .search-bar {
+        @apply flex static w-auto mx-5 my-5 bg-slate-300 dark:bg-[#525252] h-10 items-center justify-center px-5 py-6 rounded-lg
+    }
+    .search-input {
+        @apply w-full bg-transparent dark:border-b-white border-b-gray-800 border-b focus:outline-0 caret-white text-white placeholder:text-gray-700 dark:placeholder:text-white/75
+    }
+    .filter-box {
+        @apply col-span-1 rounded-md px-4 py-4 h-fit w-full bg-lightMain/80 dark:bg-darkMain/80
+    }
+    .sidebar-blocks {
+        @apply border-b px-2 py-4 w-full border-darkMain/75 dark:border-lightMain/75
+    }
+    .nav-option {
+        @apply flex justify-between text-white font-semibold py-4 px-2
+    }
+    .open {
+        @apply left-0 transition-all;
+    }
+    .card {
+        @apply block w-full flex-col aspect-square justify-center items-center relative
+    }
+    .product-photo {
+        @apply flex bg-black/25 w-full h-3/4 z-0 relative rounded-t-xl overflow-hidden justify-center
+    }
+    .price {
+        @apply bg-gray-50 w-fit absolute z-20 py-2 px-2 top-2 right-2 rounded-md drop-shadow-lg shadow-black text-center font-bold text-fitbase
+    }
+    .propType {
+        @apply h-fit w-fit font-bold rounded-xl px-1 border-4 absolute z-30 text-[1vw] text-center left-2 top-2
+    }
+    .fade-black {
+        @apply bg-gradient-to-t from-white dark:from-black z-10 w-full h-20 absolute top-[53.2%]
+    }
+    .product-data {
+        @apply w-full h-1/4 bg-white dark:bg-black text-black dark:text-white z-0 relative px-3 pb-3 text-base rounded-b-xl overflow-hidden
+    }
+    .form {
+        @apply flex-col
+    }
+    .overflows {
+        @apply transition-all duration-1000 ml-0 hover:-ml-56
+    }
+    .propName {
+        @apply text-lg w-full font-semibold inline-block text-ellipsis whitespace-nowrap overflow-hidden
+    }
 
-  input[type='checkbox']{
-    @apply enabled:bg-white enabled:dark:bg-black caret-lightMain hover:bg-current
-  }
+    .login-box {
+      @apply bg-white m-auto rounded-xl w-1/3
+    }
 
-  .content {
-    @apply flex-grow h-screen overflow-scroll px-5 py-5
-  }
+    .gallery {
+      @apply w-full h-fit
+    }
 
-  .sidebar{
-    @apply bg-lightMain dark:bg-darkMain h-screen w-60 flex-col px-3
-  }
+    .slides {
+      @apply w-fit h-fit
+    }
 
-  .search-bar{
-    @apply flex static w-auto mx-5 my-5 bg-slate-300 dark:bg-[#525252] h-10 items-center justify-center px-5 py-6 rounded-lg
-  }
+    .number {
+      @apply absolute bottom-[78px] text-center z-30 w-fit px-2 py-1 bg-white dark:bg-black dark:text-white
+    }
 
-  .search-input{
-    @apply w-full bg-transparent dark:border-b-white border-b-gray-800 border-b focus:outline-0 caret-white text-white placeholder:text-gray-700 dark:placeholder:text-white/75
-  }
+    .prev {
+      @apply absolute top-1/3 px-2 left-0
+    }
 
-  .filter-box{
-    @apply col-span-1 rounded-md px-4 py-4 h-fit w-full bg-lightMain/80 dark:bg-darkMain/80
-  }
+    .next {
+      @apply absolute top-1/3 px-2 right-0
+    }
 
-  .sidebar-blocks{
-    @apply border-b px-2 py-4 w-full border-darkMain/75 dark:border-lightMain/75
-  }
+    .navimg {
+      @apply relative w-1/5 h-1/5
+    }
 
-  .nav-option {
-     @apply flex justify-between text-white font-semibold py-4 px-2
-  }
-
-  .open {
-    @apply left-0 transition-all ;
-  }
-
-  .card{
-    @apply block w-full flex-col aspect-square justify-center items-center relative 
-  }
-
-  .product-photo{
-    @apply flex bg-black/25 w-full h-3/4 z-0 relative rounded-t-xl overflow-hidden justify-center
-  }
-
-  .price{
-    @apply bg-gray-50 w-fit absolute z-20 py-2 px-2 top-2 right-2 rounded-md drop-shadow-lg shadow-black text-center font-bold text-fitbase
-  }
-
-  .propType{
-    @apply h-fit w-fit font-bold rounded-xl px-1 border-4 absolute z-30 text-[1vw] text-center left-2 top-2
-  }
-
-  .fade-black{
-    @apply bg-gradient-to-t from-white dark:from-black z-10 w-full h-20 absolute top-[53.2%]
-  }
-
-  .product-data{
-    @apply w-full h-1/4 bg-white dark:bg-black text-black dark:text-white z-0 relative px-3 pb-3 text-base rounded-b-xl overflow-hidden
-  }
-
-  .form{
-    @apply grid
-  }
-
-  .overflows {
-    @apply transition-all duration-1000 ml-0 hover:-ml-56
-  }
-
-  .propName {
-    @apply text-lg w-full font-semibold inline-block text-ellipsis whitespace-nowrap overflow-hidden
-  }
+    .title{
+      @apply text-xl dark:text-white text-black font-semibold my-5 relative
+    }
 }

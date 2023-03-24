@@ -27,6 +27,14 @@ const hashingPw = async(password) => {
     return hashedPassword
 }
 
+router.post('/login', async(req, res) => {
+    const data = prisma.agent.findUnique({
+        where: {
+            email: req.body.email
+        }
+    })
+})
+
 router.post('/login/newuser', checkUser, async(req, res) => {
     // console.log(req.body);
     try {

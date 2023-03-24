@@ -52,7 +52,11 @@ export default function ProductCard({ data }) {
                     <Type type={data.prop_detail.prop_type}/>
                     <div className="fade-black" />
                     <div className="product-data">
-                        <div id="name" className="propName ">
+                        <div id="name" className="propName" onMouseOver={() => {
+                            if (this.scrollWidth) {
+                                
+                            }
+                        }}>
                             {data.prop_name}
                         </div>
                         <br></br>
