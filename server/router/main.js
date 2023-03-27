@@ -1,9 +1,9 @@
 const { PrismaClient } = require('@prisma/client');
 const express = require('express')
 const bcrypt = require('bcrypt')
-const passport = require('passport');
 const { check, validationResult } = require('express-validator');
 const { checkUser } = require('../middleware/validator.js')
+const jwt = require("jsonwebtoken");
 
 require('dotenv').config
 
@@ -27,10 +27,51 @@ const hashingPw = async(password) => {
     return hashedPassword
 }
 
-router.post('/login', async(req, res) => {
-    const data = prisma.agent.findUnique({
-        where: {
-            email: req.body.email
+router.post('/login', async(req, res, next) => {
+    let { email, password } = req.body
+
+    let existingUser, pwCompare
+    try {
+        existingUser = await prisma.agent.findFirst({
+            where: {
+                email: email
+            }
+        })
+
+        pwCompare = await bcrypt.compare(password, existingUser.password)
+        console.log(pwCompare);
+    } catch (err) {
+        console.error(err);
+        return next(err);
+    }
+
+    if (!existingUser || pwCompare === false) {
+        return next(Error("Wrong Username / Password"))
+    }
+
+    let jwtToken
+    try {
+        jwtToken = jwt.sign(
+            {
+                userId: existingUser.agent_id,
+                email: existingUser.email
+            },
+            process.env.JWT_SECRET_KEY,
+            {
+                expiresIn: "1h"
+            }
+        )
+    } catch (error) {
+        console.error(err);
+        return next(err);
+    }
+
+    res.json({
+        success: true,
+        data: {
+            userId: existingUser.agent_id,
+            email: existingUser.email,
+            token: jwtToken,
         }
     })
 })

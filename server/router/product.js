@@ -3,7 +3,25 @@ const { PrismaClient, Prisma } = require('@prisma/client')
 const { v4: uuidv4, v1: uuidv1 } = require('uuid');
 const { check, validationResult } = require('express-validator')
 const multer = require('multer')
-const upload = multer({ dest: '../server/public/photos' })
+const { checkFileType } = require('../middleware/validator')
+
+//Setting storage engine
+const storageEngine = multer.diskStorage({
+    destination: "./public/photos",
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}--${file.originalname}`);
+    },
+});
+
+const upload = multer({
+    storage: storageEngine,
+    limits: {
+        fileSize: 10000000
+    }, 
+    fileFilter: (req, file, cb) => {
+        checkFileType(file, cb)
+    }
+})
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -85,7 +103,7 @@ router.post('/product/create', [
     let newProp = Prisma.UserCreateInput
 
     let photos = req.files.forEach(async (e, i) => {
-        photos[i] = e.filename
+        photos[i] = e.pathname
     });
 
     if (prop_type === 'tanah') {
@@ -111,7 +129,7 @@ router.post('/product/create', [
             },
             agent: {
                 connect: {
-                    agent_id: "82bd8e20-5045-4a17-8cee-8552b5e3c3db"
+                    agent_id: req.body.email
                 }
             },
             owner: {

@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const { PrismaClientValidationError } = require("@prisma/client/runtime");
 const express = require('express')
 const multer = require('multer')
 const bcrypt = require('bcrypt')
@@ -35,6 +36,23 @@ async function getTransaction(userId) {
     return data
 }
 
+const hashingPw = async(password) => {
+    let hashedPassword = bcrypt.genSalt(10, function(err, Salt) {
+
+        // The bcrypt is used for encrypting password.
+        bcrypt.hash(password, Salt, function(err, hash) {
+
+            if (err) {
+                return console.log('Cannot encrypt');
+            }
+
+            hashedPassword = hash;
+        })
+    })
+
+    return hashedPassword
+}
+
 router.get('/profile', async(req, res) => {
     try {
         const agent = await getAgent(req.query.id)
@@ -50,25 +68,34 @@ router.get('/profile', async(req, res) => {
 router.put('/profile', upload.single(), async(req, res) => {
     try {
         const body = req.body
+        const password = hashingPw(body.password)
+
         const agent = await prisma.agent.update({
             where: {
                 agent_id: req.query.id
             },
             data: {
                 full_name: body.lName ? body.fName + ' ' + body.lName : body.fName,
+                email: body.email,
+                password: password,
                 agentBio: {
-                    addr: body.addr,
-                    city: body.city,
-                    prov: body.prov,
-                    phone: body.phone
+                    update: {
+                        addr: body.addr,
+                        city: body.city,
+                        prov: body.prov,
+                        phone: body.phone
+                    }
                 }
             },
             include: {
                 agentBio: true
             }
         })
-    } catch (err) {
 
+        res.json(agent)
+    } catch (err) {
+        if (err instanceof PrismaClientValidationError) 
+        res.json(handleQueryError(err.message)); // sending the error message directly
     }
 })
 
