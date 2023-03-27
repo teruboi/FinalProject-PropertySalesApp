@@ -1,6 +1,23 @@
 const bcrypt = require('bcrypt')
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient
+const path = require('path')
+
+const checkFileType = function (file, cb) {
+    //Allowed file extensions
+    const fileTypes = /jpeg|jpg|png/;
+    
+    //check extension names
+    const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    
+    const mimeType = fileTypes.test(file.mimetype);
+    
+    if (mimeType && extName) {
+      return cb(null, true);
+    } else {
+      cb("Invalid format: Image has to be in JPEG/JPG/PNG extension");
+    }
+};
 
 const isAuthenticated = async (res, req, next) => {
     try {
@@ -49,4 +66,4 @@ const ensureAuthenticated = (req, res, next) => {
     res.redirect('/login')
 }
 
-module.exports = { isAuthenticated, checkUser, ensureAuthenticated }
+module.exports = { isAuthenticated, checkUser, ensureAuthenticated, checkFileType }

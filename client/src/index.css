@@ -71,7 +71,7 @@
     }
 
     .gallery {
-      @apply w-full h-fit
+      @apply w-full h-96 col-span-2 bg-white dark:bg-gray-700 shadow-lg shadow-black
     }
 
     .slides {
@@ -94,7 +94,15 @@
       @apply relative w-1/5 h-1/5
     }
 
-    .title{
-      @apply text-xl dark:text-white text-black font-semibold my-5 relative
+    .detail{
+      @apply dark:text-white text-black my-5 relative col-span-2 grid grid-rows-6 bg-white dark:bg-gray-700 shadow-lg shadow-black px-5 grid-flow-col
+    }
+
+    .stats{
+      @apply flex-col px-3 py-2 shadow-lg h-fit shadow-black dark:bg-gray-700 bg-white text-black dark:text-white
+    }
+
+    .desc{
+      @apply col-start-1 col-span-2 px-5 bg-white dark:bg-gray-700 shadow-lg shadow-black py-2 text-black dark:text-white
     }
 }

@@ -11,14 +11,12 @@ const catalog = require('./router/catalog.js')
 const product = require('./router/product.js')
 const profile = require('./router/profile.js')
 const main = require('./router/main.js')
-const { body, cookie } = require('express-validator')
 require('dotenv').config()
 
 const app = express()
 
 const port = 3000
 const prisma = new PrismaClient()
-
 
 app.use(express.static(__dirname + '/public'));
 app.use(cookieParser())
