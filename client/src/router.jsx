@@ -6,6 +6,7 @@ import Register from "./pages/register";
 import Profile from "./pages/profile";
 import Catalog from "./pages/catalog";
 import Product from "./pages/product";
+import NewProduct from './pages/newproduct'
 import Checkout from "./pages/checkout";
 import Notification from "./pages/notification";
 import Testing from "./pages/testing";
@@ -20,8 +21,9 @@ function App() {
         <Route exact path="/profile" element={<Profile />} />
         <Route exact path="/catalog" element={<Catalog />} />
         <Route path="/products/:id" element={<Product />} />
-        <Route exact path="/checkout" element={<Checkout />} />
-        <Route exact path="/notifications" element={<Notification />} />
+        <Route exact path="/products/add" element={<NewProduct />} />
+        <Route exact path="/products/:id/checkout" element={<Checkout />} />
+        <Route exact path="/notification" element={<Notification />} />
         <Route exact path="/testing/:id" element={<Testing />} />
       </Routes>
     </Router>

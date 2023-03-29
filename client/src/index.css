@@ -3,7 +3,7 @@
 @tailwind utilities;
 @layer base {
     body {
-        @apply bg-slate-100 dark:bg-gray-900 transition-all
+        @apply bg-slate-100 dark:bg-gray-900 transition-all text-black dark:text-white
     }
 }
 
@@ -13,6 +13,10 @@
     }
     input[type='checkbox'] {
         @apply enabled:bg-white enabled:dark:bg-black caret-lightMain hover:bg-current
+    }
+
+    .header {
+        @apply w-4/5 text-5xl text-black dark:text-white py-2 mx-2 px-2 font-bold border-b border-black dark:border-white 
     }
     .content {
         @apply flex-grow h-screen overflow-scroll px-5 py-5
@@ -33,7 +37,7 @@
         @apply border-b px-2 py-4 w-full border-darkMain/75 dark:border-lightMain/75
     }
     .nav-option {
-        @apply flex justify-between text-white font-semibold py-4 px-2
+        @apply flex justify-between text-white font-semibold py-4 px-2 bg-transparent hover:bg-purple-500/50
     }
     .open {
         @apply left-0 transition-all;
@@ -45,7 +49,7 @@
         @apply flex bg-black/25 w-full h-3/4 z-0 relative rounded-t-xl overflow-hidden justify-center
     }
     .price {
-        @apply bg-gray-50 w-fit absolute z-20 py-2 px-2 top-2 right-2 rounded-md drop-shadow-lg shadow-black text-center font-bold text-fitbase
+        @apply bg-gray-50 w-fit absolute z-20 py-2 px-2 top-2 right-2 rounded-md drop-shadow-lg shadow-black text-center font-bold text-fitbase text-black
     }
     .propType {
         @apply h-fit w-fit font-bold rounded-xl px-1 border-4 absolute z-30 text-[1vw] text-center left-2 top-2
@@ -71,23 +75,23 @@
     }
 
     .gallery {
-      @apply w-full h-96 col-span-2 bg-white dark:bg-gray-700 shadow-lg shadow-black
+      @apply w-full h-fit col-span-2 bg-white dark:bg-gray-700 shadow-lg shadow-black flex 
     }
 
     .slides {
-      @apply w-fit h-fit
+      @apply aspect-video overflow-visible grid w-fit mx-auto relative
     }
 
     .number {
-      @apply absolute bottom-[78px] text-center z-30 w-fit px-2 py-1 bg-white dark:bg-black dark:text-white
+      @apply text-center z-30 w-fit px-2 py-1 bg-white dark:bg-black dark:text-white absolute bottom-0
     }
 
     .prev {
-      @apply absolute top-1/3 px-2 left-0
+      @apply absolute left-0 top-1/2 px-2 z-10
     }
 
     .next {
-      @apply absolute top-1/3 px-2 right-0
+      @apply absolute right-0 top-1/2 px-2 z-10
     }
 
     .navimg {

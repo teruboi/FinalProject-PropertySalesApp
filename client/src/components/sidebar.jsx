@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { FaBars, FaWindowClose, FaHome, FaPlus, FaBell, FaSun, FaMoon } from 'react-icons/fa'
-import { AiOutlineArrowRight } from 'react-icons/ai'
+import { FaBars, FaWindowClose, FaHome, FaPlus, FaBell, FaSun, FaMoon, FaPersonBooth } from 'react-icons/fa'
+import { RiShutDownLine } from 'react-icons/ri'
 import { MdClose } from 'react-icons/md'
+import { BsPerson } from 'react-icons/bs'
 
 export default function Sidebar(avatar, name) {
     const [dark, setDark] = useState(false)
@@ -29,30 +30,53 @@ export default function Sidebar(avatar, name) {
                     </div>
                 </div>
                 <div className='sidebar-blocks'>
-                    <ul>
+                    <a href="/catalog">
                         <div className='nav-option'>
-                            <div>Home</div>
+                            <div>Catalog</div>
                             <div><FaHome style={iconStyle} /></div>
                         </div>
+                    </a>
+                    <a href="/products/add">
                         <div className='nav-option'>
-                            <div>Home</div>
-                            <div><FaHome style={iconStyle} /></div>
+                            <div>Add new property</div>
+                            <div><FaPlus style={iconStyle} /></div>
                         </div>
+                    </a>
+                    <a href="/profile">
                         <div className='nav-option top'>
-                            <div>Home</div>
-                            <div><FaHome style={iconStyle} /></div>
+                            <div>Profile</div>
+                            <div><BsPerson style={iconStyle} /></div>
                         </div>
+                    </a>
+                    <a href="/notification">
                         <div className='nav-option'>
-                            <div>Home</div>
-                            <div><FaHome style={iconStyle} /></div>
+                            <div>Notification</div>
+                            <div><FaBell style={iconStyle} /></div>
                         </div>
-                    </ul>
+                    </a>
                 </div>
-                <button type='button' onClick={() => {
+                <div className='nav-option'>
+                    <div>Log out</div>
+                    <div><RiShutDownLine style={iconStyle} /></div>
+                </div>
+                <button type='button' className="w-full py-5" onClick={() => {
                     document.documentElement.classList.toggle("dark")
                     setDark(!dark)
+                    if(dark){
+                        document.querySelector("#toggleBtn").classList.add("float-right")
+                        document.querySelector("#toggleBtn").classList.remove("float-left")
+                    } else {
+                        document.querySelector("#toggleBtn").classList.add("float-left")
+                        document.querySelector("#toggleBtn").classList.remove("float-right")
+                    }
                     }}>
-                    {dark ? <FaMoon /> :<FaSun />}
+                    <div className='flex justify-center items-center'>
+                        <FaSun style={iconStyle} />
+                        <div className="mx-2 rounded-full w-20 h-fit py-2 px-2 bg-gray-800 hover:border-4 border-spacing-3 border-purple-500/50">
+                            <div id="toggleBtn" className="rounded-full h-5 w-5 bg-white transition-all" />
+                        </div>
+                        <FaMoon style={iconStyle} />
+                    </div>
                 </button>
             </div>
         </aside>

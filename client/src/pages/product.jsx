@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import moment from 'moment'
-import { FaShower, FaBed } from 'react-icons/fa'
+import { FaShower, FaBed, FaCartPlus, FaPhone } from 'react-icons/fa'
 
-// import Slideshow from '../components/slideshow'
+import Slideshow from '../components/slideshow'
 import Type from '../components/type'
 
 export default function Product() {
@@ -41,8 +41,7 @@ export default function Product() {
         <>
           <div className="content grid grid-cols-3 grid-flow-row gap-x-2">
             <div className="gallery">
-              {/* {<Slideshow img={data?.photos?.image} />} */}
-              anggap ini image slideshow
+              {<Slideshow img={data?.photos?.image} />}
             </div>
             <div className="stats">
               <div className="text-2xl font-bold">
@@ -67,6 +66,9 @@ export default function Product() {
                 <div>
                   {data?.prop_detail?.lt}m<sup>2</sup>
                 </div>
+                <div>
+                  <strong>{data?.prop_detail?.prop_sale.toUpperCase()}</strong>
+                </div>
               </div>
               <div className="text-sm font-thin mt-1">
                 {data.prop_city}, {data.prop_prov}
@@ -74,6 +76,18 @@ export default function Product() {
               {<p className="font-thin text-sm mt-1">{moment(date).format("D MMM")}</p>}
               <div className="relative -top-9 left-[85%]">
                 {<Type type={data?.prop_detail?.prop_type} />}
+              </div>
+              <div className="flex items-center justify-center gap-x-2">
+                <a href={`http://localhost:5173/products/${data?.id}/checkout`}>
+                  <div className="w-fit mx-auto my-2 px-5 py-2 bg-lightMain text-white rounded-md font-bold">
+                    <span className="inline-flex items-center text-center"><FaCartPlus />&nbsp;&nbsp;Go to checkout</span>
+                  </div>
+                </a>
+                <a href={`tel:${data?.owner?.phone}`}>
+                  <div className="w-fit mx-auto my-2 px-5 py-2 bg-green-600 text-white rounded-md font-bold">
+                    <span className="inline-flex items-center text-center"><FaPhone />&nbsp;&nbsp;Owner</span>
+                  </div>
+                </a>
               </div>
             </div>
             <div className="detail">
@@ -111,7 +125,7 @@ export default function Product() {
               </div>
               <div className="grid grid-cols-2 h-fit">
                 <h1 className="font-thin">Kondisi</h1>
-                <p className="font-semibold">{data?.prop_detail?.condition.charAt(0).toUpperCase()+data?.prop_detail?.condition.slice(1)}</p>
+                <p className="font-semibold">{data?.prop_detail?.condition ? data?.prop_detail?.condition.charAt(0).toUpperCase()+data?.prop_detail?.condition.slice(1) : null}</p>
               </div>
               <div className="grid grid-cols-2 h-fit">
                 <h1 className="font-thin">Tahun</h1>
@@ -122,7 +136,6 @@ export default function Product() {
               <h1 className="font-bold text-xl w-full py-2 border-b-2">Deskripsi</h1>
               <p className="py-2 text-justify">{data?.prop_detail?.description}</p>
             </div>
-            div.
           </div>
 
           <div className="modal">
