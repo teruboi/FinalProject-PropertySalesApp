@@ -17,6 +17,10 @@ export default function Sidebar(avatar, name) {
         } else {
             setHide(false)
         }
+
+        if(document.documentElement.classList.contains('dark')) {
+            setDark(true)
+        }
     });
 
     console.log(hide);
@@ -63,11 +67,11 @@ export default function Sidebar(avatar, name) {
                     document.documentElement.classList.toggle("dark")
                     setDark(!dark)
                     if(dark){
-                        document.querySelector("#toggleBtn").classList.add("float-right")
-                        document.querySelector("#toggleBtn").classList.remove("float-left")
-                    } else {
                         document.querySelector("#toggleBtn").classList.add("float-left")
                         document.querySelector("#toggleBtn").classList.remove("float-right")
+                    } else {
+                        document.querySelector("#toggleBtn").classList.add("float-right")
+                        document.querySelector("#toggleBtn").classList.remove("float-left")
                     }
                     }}>
                     <div className='flex justify-center items-center'>

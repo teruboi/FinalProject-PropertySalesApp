@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
-import { BsFullscreenExit } from "react-icons/bs"
-import { FaCross, FaWindowClose } from "react-icons/fa"
+import { IoMdClose } from "react-icons/io"
 import { useParams } from "react-router-dom"
 
 
@@ -59,10 +58,10 @@ export default function main() {
                                     <li className="" key={i}>
                                         <div className="flex justify-between items-center">
                                             {e}
-                                            <a onClick={(e) => {
-
+                                            <a onClick={() => {
+                                                setAgreement(agreement.filter((el) => el !== e))                                                    
                                             }}>
-                                                <FaWindowClose className="border-red-500"/>
+                                                <IoMdClose className="hover:border-2 border-red-500"/>
                                             </a>
                                         </div>
                                     </li>
