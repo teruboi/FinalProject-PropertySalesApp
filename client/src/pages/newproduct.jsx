@@ -20,7 +20,8 @@ export default function NewProduct(){
             });
           })
         ).then((imageArray) => {
-          setImages((prevImages) => prevImages.concat(imageArray));
+          setImages((prevImages) => prevImages.concat(imageArray))
+          e.target.value = null;
         });
       };
 
@@ -47,7 +48,7 @@ export default function NewProduct(){
                         <label htmlFor="propName" className='basis-1/5'>Photos</label>
                         <input required type="file" multiple name="photos" id="photos" className="w-4/5 rounded-md bg-transparent basis-4/5" onChange={handleImageChange} accept="image/png, image/jpeg"/>
                     </div>
-                    <div className='flex'>
+                    <div className='flex items-center py-2'>
                             {images.map((image, index) => (
                             <div key={index} className="aspect-square w-48 overflow-hidden mr-2 rounded-sm relative">
                                 <img src={image} alt={`image-${index}`} />
@@ -57,11 +58,53 @@ export default function NewProduct(){
                                     <div className='rounded-full px-0.5 py-0.5 bg-red-500'>
                                         <GrClose style={{outlineColor:"#FFFFFF"}} />
                                     </div>
-                                    
                                 </a>
                             </div>
                             ))}
+                    </div>
+                    <div className="flex items-center py-2">
+                        <label htmlFor="price" className='basis-1/5'>Price</label>
+                        <input type="number" name="price" id="price" className='basis-4/5'/>
+                    </div>
+                    <div className="flex items-center py-2">
+                        <label htmlFor="propProv" className='basis-1/5'>
+                            Province
+                        </label>
+                        <input type="text" name="propProv" id="propProv" className='basis-[20.666667%]' />
+                        <div className="basis-1/12" />
+                        <label htmlFor="propCity" className='basis-1/5'>
+                            City
+                        </label>
+                        <input type="text" name="propCity" id="propCity" className='basis-[20.666667%]' />
+                    </div>
+                    <div className="flex items-center py-2">
+                        <label className='basis-1/5'>Transaction Type</label>
+                        
+                        <label htmlFor="jual" className='mx-5'>
+                            <input type="radio" value="jual" name="propSale" id="jual" className='mr-1'/>Jual
+                        </label>
+                        
+                        <label htmlFor="sewa" className='mx-5'>
+                            <input type="radio" value="sewa" name="propSale" id="sewa" className='mr-1'/>Sewa
+                        </label>
+                        
+                        <label htmlFor="jualsewa" className='mx-5'>
+                            <input type="radio" value="jual/sewa" name="propSale" id="jualsewa" className='mr-1'/>Jual/Sewa
+                        </label>
+                    </div>
+                    <div className="flex items-center py-2">
+                        <label htmlFor="propProv" className='basis-1/5'>
+                            Luas Tanah
+                        </label>
+                        <input type="text" name="propProv" id="propProv" className='basis-[20.666667%]' />
+                        <div className="basis-1/12" />
+                        <div className='' aria-disabled>
+                            <label htmlFor="propCity" className='basis-1/5'>
+                                Luas Bangunan
+                            </label>
+                            <input type="text" name="propCity" id="propCity" className='basis-[20.666667%]' />
                         </div>
+                    </div>
                 </form>
             </div>
         </div>
