@@ -78,7 +78,7 @@ export default function main() {
                         <div>
                                 
                         </div>                     
-                        {/* {console.log(agreement)} */}
+                        {console.log(agreement)}
                     </div>
                 </div>
             </div>

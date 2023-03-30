@@ -7,7 +7,9 @@ const { checkFileType } = require('../middleware/validator')
 
 //Setting storage engine
 const storageEngine = multer.diskStorage({
-    destination: "./public/photos",
+    destination: (req, file, cb) => {
+        cb(null, "./public/photos")
+    },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}--${file.originalname}`);
     },
@@ -22,6 +24,7 @@ const upload = multer({
         checkFileType(file, cb)
     }
 })
+
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -46,6 +49,7 @@ router.get('/product/:prop_id', async (req, res) => {
 });
 
 router.post('/product/create', [
+    upload.fields([{name: 'photos', maxCount: 12}]),
     check('prop_name')
         .notEmpty().withMessage('Harus diisi')
         .isString()
@@ -86,8 +90,7 @@ router.post('/product/create', [
     check('prop_type')
         .notEmpty().withMessage('Harus diisi'),
     check('prop_sale')
-        .notEmpty().withMessage('Harus diisi'),
-    upload.array('prop-photos', 12)
+        .notEmpty().withMessage('Harus diisi')
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

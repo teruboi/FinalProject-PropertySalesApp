@@ -1,5 +1,6 @@
 //Importing dependencies
 const express = require('express')
+const fileupload = require('express-fileupload');
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const helmet = require('helmet')
@@ -22,6 +23,9 @@ app.use(express.static(__dirname + '/public'));
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(fileupload({
+    createParentPath: true, 
+}))
 app.use(cors())
 app.use(helmet())
 app.use(morgan('tiny'))

@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
-    body {
-        @apply bg-slate-100 dark:bg-gray-900 transition-all text-black dark:text-white
+
+    body{
+        @apply bg-slate-100 dark:bg-gray-900 text-black dark:text-white transition-colors
     }
 }
 
@@ -13,6 +14,22 @@
     }
     input[type='checkbox'] {
         @apply enabled:bg-white enabled:dark:bg-black caret-lightMain hover:bg-current
+    }
+
+    input[type="text"], [type="number"]{
+        @apply bg-transparent rounded-md focus:ring-2 focus:ring-purple-700 caret-lightMain
+    }
+
+    select{
+        @apply bg-transparent rounded-md
+    }
+
+    option{
+        @apply dark:bg-gray-800
+    }
+
+    .error{
+        @apply text-red-600
     }
 
     .header {

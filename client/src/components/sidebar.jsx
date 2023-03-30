@@ -21,6 +21,14 @@ export default function Sidebar(avatar, name) {
         if(document.documentElement.classList.contains('dark')) {
             setDark(true)
         }
+
+        if(!dark){
+            document.querySelector("#toggleBtn").classList.add("float-left")
+            document.querySelector("#toggleBtn").classList.remove("float-right")
+        } else {
+            document.querySelector("#toggleBtn").classList.add("float-right")
+            document.querySelector("#toggleBtn").classList.remove("float-left")
+        }
     });
 
     console.log(hide);
@@ -66,18 +74,11 @@ export default function Sidebar(avatar, name) {
                 <button type='button' className="w-full py-5" onClick={() => {
                     document.documentElement.classList.toggle("dark")
                     setDark(!dark)
-                    if(dark){
-                        document.querySelector("#toggleBtn").classList.add("float-left")
-                        document.querySelector("#toggleBtn").classList.remove("float-right")
-                    } else {
-                        document.querySelector("#toggleBtn").classList.add("float-right")
-                        document.querySelector("#toggleBtn").classList.remove("float-left")
-                    }
                     }}>
                     <div className='flex justify-center items-center'>
                         <FaSun style={iconStyle} />
-                        <div className="mx-2 rounded-full w-20 h-fit py-2 px-2 bg-gray-800 hover:border-4 border-spacing-3 border-purple-500/50">
-                            <div id="toggleBtn" className="rounded-full h-5 w-5 bg-white transition-all" />
+                        <div className="mx-2 rounded-full w-20 h-fit py-2 px-2 bg-gray-800  border-spacing-3 ">
+                            <div id="toggleBtn" className="rounded-full h-5 w-5 bg-white hover:border-4 border-purple-500/50" />
                         </div>
                         <FaMoon style={iconStyle} />
                     </div>
