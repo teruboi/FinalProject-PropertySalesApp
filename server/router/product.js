@@ -19,7 +19,7 @@ const upload = multer({
     storage: storageEngine,
     limits: {
         fileSize: 10000000
-    }, 
+    },
     fileFilter: (req, file, cb) => {
         checkFileType(file, cb)
     }
@@ -29,7 +29,7 @@ const upload = multer({
 const router = express.Router();
 const prisma = new PrismaClient();
 
-router.get('/product/:prop_id', async (req, res) => {
+router.get('/product/:prop_id', async(req, res) => {
     try {
         const product = await prisma.property_list.findUniqueOrThrow({
             where: {
@@ -44,134 +44,145 @@ router.get('/product/:prop_id', async (req, res) => {
 
         res.json(product)
     } catch (err) {
-        res.json({error: err})   
+        res.json({ error: err })
     }
 });
 
 router.post('/product/create', [
-    upload.fields([{name: 'photos', maxCount: 12}]),
-    check('prop_name')
-        .notEmpty().withMessage('Harus diisi')
-        .isString()
-        .isLength({ min: 15, max: 70 }).withMessage('Jumlah karakter tidak sesuai'),
-    check('price')
-        .notEmpty().withMessage('Harus diisi')
-        .isInt().withMessage('Format tidak sesuai'),
-    check('prop_prov')
-        .notEmpty().withMessage('Harus diisi'),
-    check('prop_city')
-        .notEmpty().withMessage('Harus diisi'),
-    check('lt')
-        .notEmpty().withMessage('Harus diisi')
-        .isInt().withMessage('Format tidak sesuai'),
-    check('lb')
-        .default(0)
-        .isInt().withMessage('Format tidak sesuai'),
-    check('ownerName')
-        .notEmpty().withMessage('Harus diisi'),
-    check('ownerNIK')
-        .notEmpty().withMessage('Harus diisi'),
-    check('ownerPhone')
-        .notEmpty().withMessage('Harus diisi')
-        .isMobilePhone('id-ID').withMessage('Format nomor telepon harus Indonesia'),
-    check('ownerAddr')
-        .notEmpty().withMessage('Harus diisi')
-        .isString(),
-    check('description')
-        .notEmpty().withMessage('Harus diisi')
-        .isString()
-        .isLength({ min: 20, max: 4000 }).withMessage('Jumlah karakter tidak sesuai'),
-    check('photos')
-        .custom((req) => {
-            if(!req.file){
-                throw new Error('Foto harus diisi minimal satu (1)')
-            }
-        }),
-    check('prop_type')
-        .notEmpty().withMessage('Harus diisi'),
-    check('prop_sale')
-        .notEmpty().withMessage('Harus diisi')
-], async (req, res) => {
+    upload.fields([{ name: 'photos', maxCount: 12 }]),
+    // check('propName')
+    // .notEmpty().withMessage('Harus diisi')
+    // .isString()
+    // .isLength({ min: 15, max: 70 }).withMessage('Jumlah karakter tidak sesuai'),
+    // check('price')
+    // .notEmpty().withMessage('Harus diisi')
+    // .isInt().withMessage('Format tidak sesuai'),
+    // check('propProv')
+    // .notEmpty().withMessage('Harus diisi'),
+    // check('propCity')
+    // .notEmpty().withMessage('Harus diisi'),
+    // check('lt')
+    // .notEmpty().withMessage('Harus diisi')
+    // .isInt().withMessage('Format tidak sesuai'),
+    // check('lb')
+    // .default(0)
+    // .isInt().withMessage('Format tidak sesuai'),
+    // check('ownerName')
+    // .notEmpty().withMessage('Harus diisi'),
+    // check('ownerNIK')
+    // .notEmpty().withMessage('Harus diisi'),
+    // check('ownerPhone')
+    // .notEmpty().withMessage('Harus diisi')
+    // .isMobilePhone('id-ID').withMessage('Format nomor telepon harus Indonesia'),
+    // check('ownerAddr')
+    // .notEmpty().withMessage('Harus diisi')
+    // .isString(),
+    // check('description')
+    // .notEmpty().withMessage('Harus diisi')
+    // .isString()
+    // .isLength({ min: 20, max: 4000 }).withMessage('Jumlah karakter tidak sesuai'),
+    // check('photos')
+    // .custom((req) => {
+    //     if (!req.files) {
+    //         throw new Error('Foto harus diisi minimal satu (1)')
+    //     }
+
+    //     if (req.files.length < 3) {
+    //         throw new Error('Foto kurang dari batas minimal')
+    //     }
+    // }),
+    // check('propType')
+    // .notEmpty().withMessage('Harus diisi'),
+    // check('propSale')
+    // .notEmpty().withMessage('Harus diisi')
+], async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({ errors: errors.array()});
+        console.log(errors);
+        return res.json({ errors: errors.array() });
     }
     const formData = req.body
     console.log(formData);
 
-    const specialCode = formData.prop_type.slice(0, 3)
+    const specialCode = formData.propType.slice(0, 3)
     const specialCode2 = uuidv4().split('-')[0]
-    
+
     const prop_id = specialCode + specialCode2
     let newProp = Prisma.UserCreateInput
 
-    let photos = req.files.forEach(async (e, i) => {
-        photos[i] = e.pathname
-    });
+    console.log(req.files)
+    let photos = []
+    if (req.files) {
+        const file = req.files.photos
+        photos = file.map(async(e, i) => {
+            console.log(e.path);
+            photos[i] = e.path
+        });
+    } else {
+        throw new Error("photos not found")
+    }
 
-    if (prop_type === 'tanah') {
+
+    if (formData.propType === 'tanah') {
         newProp = {
             prop_name: formData.propName,
-            price: formData.price,
+            price: parseInt(formData.price),
             prop_prov: formData.propProv,
             prop_city: formData.propCity,
             id: prop_id,
             prop_detail: {
                 create: {
                     prop_type: formData.propType,
-                    lt: formData.lt,
+                    lt: parseInt(formData.lt),
                     description: formData.desc,
-                    prop_sale: formData.saleType,
+                    prop_sale: formData.propSale,
                     cert: formData.cert
                 }
             },
             photos: {
                 create: {
-                    image: photos
+                    image: req.files.photos
                 }
             },
-            agent: {
-                connect: {
-                    agent_id: req.body.email
-                }
-            },
+            // agent: {
+            //     connect: {
+            //         agent_id: req.session
+            //     }
+            // },
             owner: {
                 create: {
-                    name: faker.name.fullName(),
-                    nik: faker.random.numeric(16),
-                    phone: faker.phone.number('+628##########'),
-                    addr: faker.address.streetAddress(true),
-                    id: faker.datatype.uuid()
+                    name: formData.ownerName,
+                    nik: formData.ownerNIK,
+                    phone: formData.ownerName,
+                    addr: formData.ownerAddr,
                 }
             }
         }
-    }
-    else {
+    } else {
         newProp = {
-            prop_name: faker.random.words(3),
-            price: faker.datatype.number({min: 10, max: 1000})*1000000,
-            prop_prov: faker.address.county(),
-            prop_city: faker.address.cityName(),
-            available: true,
+            prop_name: formData.propName,
+            price: parseInt(formData.price),
+            prop_prov: formData.propProv,
+            prop_city: formData.propCity,
             id: prop_id,
             prop_detail: {
                 create: {
-                    prop_type: prop_type,
-                    lt: faker.datatype.number({min: 10, max: 500}),
-                    description: faker.lorem.paragraph(5),
-                    lb: faker.datatype.number({min: 10, max: 500}),
-                    km: faker.datatype.number({min: 0, max: 5}),
-                    kt: faker.datatype.number({min: 0, max: 5}),
-                    floor: faker.datatype.number({min: 1, max: 4}),
-                    cert: cert,
-                    power: (faker.datatype.number({min: 1, max: 10})*1000),
-                    carport: faker.datatype.number({min: 0, max: 3}),
-                    garage: faker.datatype.number({min: 0, max: 3}),
-                    condition: faker.datatype.boolean() ? "baru" : "bekas",
-                    facing: faker.address.cardinalDirection(true),
-                    year: faker.date.past(10).getUTCFullYear(),
-                    furniture: faker.datatype.boolean() ? "furnished" : "unfurnished",
-                    prop_sale: prop_sale
+                    prop_type: formData.propType,
+                    lt: parseInt(formData.lt),
+                    description: formData.desc,
+                    prop_sale: formData.propSale,
+                    cert: formData.cert,
+                    lb: parseInt(formData.lb),
+                    km: parseInt(formData.km),
+                    kt: parseInt(formData.kt),
+                    floor: parseInt(formData.floor),
+                    power: parseInt(formData.power),
+                    carport: parseInt(formData.carport),
+                    garage: parseInt(formData.garage),
+                    condition: formData.condition,
+                    facing: formData.facing,
+                    year: parseInt(formData.year),
+                    furniture: formData.furniture,
                 }
             },
             photos: {
@@ -186,11 +197,10 @@ router.post('/product/create', [
             },
             owner: {
                 create: {
-                    name: faker.name.fullName(),
-                    nik: faker.random.numeric(16),
-                    phone: faker.phone.number('+628##########'),
-                    addr: faker.address.streetAddress(true),
-                    id: faker.datatype.uuid()
+                    name: formData.ownerName,
+                    nik: formData.ownerNIK,
+                    phone: formData.ownerName,
+                    addr: formData.ownerAddr,
                 }
             }
         }
@@ -200,51 +210,49 @@ router.post('/product/create', [
         data: newProp
     })
 
-    res.json(newProduct)
+    console.log(newProduct)
 })
 
-router.put('/product/:prop_id',
-    [
-        upload.array('prop-photos', 12),
-        check('prop_name')
-            .notEmpty().withMessage('Harus diisi')
-            .isString()
-            .isLength({ min: 15, max: 70 }).withMessage('Jumlah karakter tidak sesuai'),
-        check('price')
-            .notEmpty().withMessage('Harus diisi')
-            .isInt().withMessage('Format tidak sesuai'),
-        check('prop_prov')
-            .notEmpty().withMessage('Harus diisi'),
-        check('prop_city')
-            .notEmpty().withMessage('Harus diisi'),
-        check('lt')
-            .notEmpty().withMessage('Harus diisi')
-            .isInt().withMessage('Format tidak sesuai'),
-        check('lb')
-            .default(0)
-            .isInt().withMessage('Format tidak sesuai'),
-        check('ownerName')
-            .notEmpty().withMessage('Harus diisi'),
-        check('ownerNIK')
-            .notEmpty().withMessage('Harus diisi'),
-        check('ownerPhone')
-            .notEmpty().withMessage('Harus diisi')
-            .isMobilePhone('id-ID').withMessage('Format nomor telepon harus Indonesia'),
-        check('ownerAddr')
-            .notEmpty().withMessage('Harus diisi')
-            .isString(),
-        check('description')
-            .notEmpty().withMessage('Harus diisi')
-            .isString()
-            .isLength({ min: 20, max: 4000 }).withMessage('Jumlah karakter tidak sesuai'),
-        check('photos')
-            .notEmpty().withMessage('Harus diisi'),
-        check('prop_type')
-            .notEmpty().withMessage('Harus diisi'),
-        check('prop_sale')
-            .notEmpty().withMessage('Harus diisi')
-    ]
-    ,async (req, res) => {
+router.put('/product/:prop_id', [
+    upload.array('prop-photos', 12),
+    check('prop_name')
+    .notEmpty().withMessage('Harus diisi')
+    .isString()
+    .isLength({ min: 15, max: 70 }).withMessage('Jumlah karakter tidak sesuai'),
+    check('price')
+    .notEmpty().withMessage('Harus diisi')
+    .isInt().withMessage('Format tidak sesuai'),
+    check('prop_prov')
+    .notEmpty().withMessage('Harus diisi'),
+    check('prop_city')
+    .notEmpty().withMessage('Harus diisi'),
+    check('lt')
+    .notEmpty().withMessage('Harus diisi')
+    .isInt().withMessage('Format tidak sesuai'),
+    check('lb')
+    .default(0)
+    .isInt().withMessage('Format tidak sesuai'),
+    check('ownerName')
+    .notEmpty().withMessage('Harus diisi'),
+    check('ownerNIK')
+    .notEmpty().withMessage('Harus diisi'),
+    check('ownerPhone')
+    .notEmpty().withMessage('Harus diisi')
+    .isMobilePhone('id-ID').withMessage('Format nomor telepon harus Indonesia'),
+    check('ownerAddr')
+    .notEmpty().withMessage('Harus diisi')
+    .isString(),
+    check('description')
+    .notEmpty().withMessage('Harus diisi')
+    .isString()
+    .isLength({ min: 20, max: 4000 }).withMessage('Jumlah karakter tidak sesuai'),
+    check('photos')
+    .notEmpty().withMessage('Harus diisi'),
+    check('prop_type')
+    .notEmpty().withMessage('Harus diisi'),
+    check('prop_sale')
+    .notEmpty().withMessage('Harus diisi')
+], async(req, res) => {
     try {
         const data = await req.body
 
@@ -293,24 +301,24 @@ router.put('/product/:prop_id',
             }
         })
 
-        
+
     } catch (err) {
         console.error(err);
         res.sendStatus(500).json({ error: err });
     }
 })
 
-router.delete('/product/delete/:prop_id', async (req, res) => {
+router.delete('/product/delete/:prop_id', async(req, res) => {
     try {
         const deleted = await prisma.property_list.delete({
             where: {
                 id: req.params.prop_id
             }
         })
-    
+
         res.json('Property succesfully deleted')
     } catch (err) {
-        res.json({error: err})
+        res.json({ error: err })
     }
 })
 

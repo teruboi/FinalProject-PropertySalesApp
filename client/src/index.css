@@ -16,7 +16,7 @@
         @apply enabled:bg-white enabled:dark:bg-black caret-lightMain hover:bg-current
     }
 
-    input[type="text"], [type="number"]{
+    input[type="text"], [type="number"], [type="tel"]{
         @apply bg-transparent rounded-md focus:ring-2 focus:ring-purple-700 caret-lightMain
     }
 

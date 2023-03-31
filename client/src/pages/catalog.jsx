@@ -32,6 +32,10 @@ export default function Catalog() {
       }
     }
 
+    const handleFilterChange = (e) => {
+      const formData = new FormData()
+    }
+
     const handleChange = (e) => {
       setSearch(e.target.value)
     }
@@ -72,17 +76,28 @@ export default function Catalog() {
               })}
             </div>
             <div className="filter-box">
-              <form className="form">
+              <form className="form" onChange={handleFilterChange}>
                 <label className='font-bold mb-2'>Tipe Properti</label>
-                {/* <div className='inline-flex gap-2 items-center'> */}
-                  <input type="checkbox" name="propType" value="rumah" id='propType'/>
-                  <label className='text-sm'>Rumah</label>
-                {/* </div> */}
-                
-                <input type="checkbox" name="propType" value="apartment"/>
-                <input type="checkbox" name="propType" value="ruko"/>
-                <input type="checkbox" name="propType" value="tanah"/>
+                <div className='grid grid-cols-1 gap-2'>
+                  <label className='text-sm'>
+                    <input type="checkbox" name="propType" value="rumah" id='propType'/>
+                    &nbsp;Rumah
+                  </label>
+                  <label className='text-sm'>
+                    <input type="checkbox" name="propType" value="apartemen"/>
+                    &nbsp;Apartemen
+                  </label>
+                  <label className="text-sm">
+                    <input type="checkbox" name="propType" value="ruko"/>
+                    &nbsp;Ruko
+                  </label>
+                  <label className="text-sm">
+                    <input type="checkbox" name="propType" value="tanah"/>
+                    &nbsp;Tanah
+                  </label>
+                </div>
                 <div className='sidebar-blocks col-span-2' />
+
               </form>
             </div>
           </div>
